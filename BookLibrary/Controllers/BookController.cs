@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
 using BookLibrary.Models;
 using BookLibrary.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookLibrary.Controllers
 {
-    [Route("api/controller")]
+    [Route("api/Book")]
     public class BookController : Controller
     {
         private readonly IBookService _bookService;
@@ -16,6 +17,7 @@ namespace BookLibrary.Controllers
         }
 
         [HttpGet("[action]"), Produces("application/json")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetBooks()
         {
             return Ok(new
@@ -27,7 +29,7 @@ namespace BookLibrary.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetBook(int id)
         {
-            return Ok(new {result = await _bookService.GetBook(id)});
+            return Ok(new {data = await _bookService.GetBook(id)});
         }
 
         [HttpPost("[action]")]

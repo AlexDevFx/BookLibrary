@@ -9,6 +9,8 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
+import { BookComponent } from './components/book/book.component';
+import { InputTextModule, DataTableModule, ButtonModule, DialogModule } from 'primeng/primeng';
 
 @NgModule({
     declarations: [
@@ -16,17 +18,20 @@ import { CounterComponent } from './components/counter/counter.component';
         NavMenuComponent,
         CounterComponent,
         FetchDataComponent,
-        HomeComponent
+        HomeComponent,
+        BookComponent
     ],
     imports: [
         CommonModule,
         HttpModule,
         FormsModule,
+        InputTextModule, DataTableModule, ButtonModule, DialogModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
+            { path: 'books', component: BookComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]

@@ -23,7 +23,35 @@
 
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
+    <Compile Remove="wwwroot\resources\themes\images\**" />
+    <Compile Remove="wwwroot\resources\themes\themes\**" />
     <Content Remove="ClientApp\**" />
+    <Content Remove="wwwroot\resources\themes\images\**" />
+    <Content Remove="wwwroot\resources\themes\themes\**" />
+    <EmbeddedResource Remove="wwwroot\resources\themes\images\**" />
+    <EmbeddedResource Remove="wwwroot\resources\themes\themes\**" />
+    <None Remove="wwwroot\resources\themes\images\**" />
+    <None Remove="wwwroot\resources\themes\themes\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\app\components\book\book.component.ts" />
+    <None Remove="ClientApp\app\_models\book.ts" />
+    <None Remove="ClientApp\app\_models\index.ts" />
+    <None Remove="ClientApp\app\_services\book.service.ts" />
+    <None Remove="ClientApp\app\_services\index.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\book\book.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\_models\book.ts" />
+    <TypeScriptCompile Include="ClientApp\app\_models\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\_services\book.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\_services\index.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\resources\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
