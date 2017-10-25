@@ -7,5 +7,6 @@
         public string Title { get; set; }
         public string Author { get; set; }
         public int YearPress { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
