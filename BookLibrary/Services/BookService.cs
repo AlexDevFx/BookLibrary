@@ -2,6 +2,8 @@
 using BookLibrary.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookLibrary.Services
 {
@@ -14,23 +16,23 @@ namespace BookLibrary.Services
             _context = context;
         }
 
-        public IEnumerable<Book> GetBooks()
+        public async Task<IEnumerable<Book>> GetBooks()
         {
-            return _context.Books.Where(x => x.IsDeleted == false);
+            return await _context.Books.Where(x => x.IsDeleted == false).ToListAsync();
         }
 
-        public Book GetBook(int id)
+        public async Task<Book> GetBook(int id)
         {
-            return _context.Books.FirstOrDefault(x => x.Id == id);
+            return  await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public void CreateBook(Book book)
+        public async Task CreateBook(Book book)
         {
             _context.Add(book);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteBook(int id)
+        public async Task DeleteBook(int id)
         {
             var book = _context.Books.FirstOrDefault(x => x.Id == id);
 
@@ -41,10 +43,10 @@ namespace BookLibrary.Services
 
             book.IsDeleted = true;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdateBook(Book book)
+        public async Task UpdateBook(Book book)
         {
             var entity = _context.Books.FirstOrDefault(x => x.Id == book.Id);
 
@@ -58,16 +60,16 @@ namespace BookLibrary.Services
             entity.Title = book.Title;
             entity.YearPress = book.YearPress;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 
     public interface IBookService
     {
-        IEnumerable<Book> GetBooks();
-        Book GetBook(int id);
-        void CreateBook(Book book);
-        void DeleteBook(int id);
-        void UpdateBook(Book book);
+        Task<IEnumerable<Book>> GetBooks();
+        Task<Book> GetBook(int id);
+        Task CreateBook(Book book);
+        Task DeleteBook(int id);
+        Task UpdateBook(Book book);
     }
 }
