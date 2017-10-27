@@ -36,16 +36,12 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\book\book.component.ts" />
-    <None Remove="ClientApp\app\_models\book.ts" />
-    <None Remove="ClientApp\app\_models\index.ts" />
     <None Remove="ClientApp\app\_services\book.service.ts" />
     <None Remove="ClientApp\app\_services\index.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\book\book.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\_models\book.ts" />
-    <TypeScriptCompile Include="ClientApp\app\_models\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\_services\book.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\_services\index.ts" />
   </ItemGroup>
