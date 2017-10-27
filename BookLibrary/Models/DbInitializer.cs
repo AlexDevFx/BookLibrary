@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace BookLibrary.Models
 {
@@ -13,50 +11,71 @@ namespace BookLibrary.Models
 
             if (context.Books.Any())
             {
-                return;   // DB has been seeded
+                return; // DB has been seeded
             }
+
+            var categories = new List<Category>()
+            {
+                new Category()
+                {
+                    Name = "Category 1"
+                },
+                new Category()
+                {
+                    Name = "Category 2"
+                },
+                new Category()
+                {
+                    Name = "Category 3"
+                },
+                new Category()
+                {
+                    Name = "Category 4"
+                },
+                new Category()
+                {
+                    Name = "Category 5"
+                }
+            };
+
+            foreach (var category in categories)
+            {
+                context.Add(category);
+            }
+
+            context.SaveChanges();
 
             var books = new List<Book>()
             {
                 new Book()
                 {
-                    Author = "Author 1",
-                    Isbn = "Isbn 1",
                     Title = "Title 1",
-                    YearPress = 2017,
-                    IsDeleted = false
+                    IsDeleted = false,
+                    Category = categories[0]
                 },
                 new Book()
                 {
-                    Author = "Author 2",
-                    Isbn = "Isbn 2",
                     Title = "Title 2",
-                    YearPress = 2016,
-                    IsDeleted = false
+                    IsDeleted = false,
+                    Category = categories[1]
                 },
                 new Book()
                 {
-                    Author = "Author 3",
-                    Isbn = "Isbn 3",
                     Title = "Title 3",
-                    YearPress = 2015,
-                    IsDeleted = false
+                    IsDeleted = false,
+                    Category = categories[2]
                 },
                 new Book()
                 {
-                    Author = "Author 4",
-                    Isbn = "Isbn 4",
                     Title = "Title 4",
-                    YearPress = 2014,
-                    IsDeleted = false
+                    IsDeleted = false,
+                    Category = categories[3]
                 },
                 new Book()
                 {
-                    Author = "Author 5",
-                    Isbn = "Isbn 5",
                     Title = "Title 5",
-                    YearPress = 2013,
-                    IsDeleted = false
+                    IsDeleted = false,
+                    Category = categories[4]
                 },
             };
 

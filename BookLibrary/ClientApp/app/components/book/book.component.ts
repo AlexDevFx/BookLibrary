@@ -40,6 +40,7 @@ export class BookComponent implements OnInit {
     loadData() {
         this.bookService.getBooks()
             .subscribe(data => {
+                    console.log(data);
                     this.rowData = data.result;
                 },
                 error => console.error(error));

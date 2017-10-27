@@ -3,6 +3,7 @@ using BookLibrary.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookLibrary.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookLibrary.Services
@@ -16,25 +17,39 @@ namespace BookLibrary.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Book>> GetBooks()
+        public async Task<IEnumerable<BookVm>> GetBooks()
         {
-            return await _context.Books.Where(x => x.IsDeleted == false).ToListAsync();
+            var books = await _context.Books.Where(x => x.IsDeleted == false).Include(y => y.Category).ToListAsync();
+            return books.Select(x => new BookVm()
+            {
+                BookId = x.Id,
+                BookTitle = x.Title,
+                CategoryName = x.Category.Name,
+                CategoryId = x.CategoryId
+            }).ToList();
         }
 
-        public async Task<Book> GetBook(int id)
+        public async Task CreateBook(BookVm book)
         {
-            return  await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
-        }
+            var category = _context.Categories.FirstOrDefault(x => x.Name.ToUpperInvariant() == book.CategoryName.ToUpperInvariant());
+            var entity = new Book {Title = book.BookTitle};
 
-        public async Task CreateBook(Book book)
-        {
-            _context.Add(book);
+            if (category == null)
+            {
+                entity.Category = new Category() {Name = book.CategoryName};
+            }
+            else
+            {
+                entity.CategoryId = category.Id;
+            }
+
+            _context.Add(entity);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteBook(int id)
         {
-            var book = _context.Books.FirstOrDefault(x => x.Id == id);
+            var book = _context.Books.Include(y => y.Category).FirstOrDefault(x => x.Id == id);
 
             if (book == null)
             {
@@ -46,19 +61,27 @@ namespace BookLibrary.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateBook(Book book)
+        public async Task UpdateBook(BookVm book)
         {
-            var entity = _context.Books.FirstOrDefault(x => x.Id == book.Id);
+            var entity = _context.Books.FirstOrDefault(x => x.Id == book.BookId);
 
             if (entity == null)
             {
-                throw new Exception($"There is no book id database with {book.Id} id.");
+                throw new Exception($"There is no book id database with {book.BookId} id.");
             }
 
-            entity.Author = book.Author;
-            entity.Isbn = book.Isbn;
-            entity.Title = book.Title;
-            entity.YearPress = book.YearPress;
+            entity.Title = book.BookTitle;
+
+            var category = _context.Categories.FirstOrDefault(x => x.Name.ToUpperInvariant() == book.CategoryName.ToUpperInvariant());
+
+            if (category == null)
+            {
+                entity.Category = new Category() { Name = book.CategoryName };
+            }
+            else
+            {
+                entity.CategoryId = category.Id;
+            }
 
             await _context.SaveChangesAsync();
         }
@@ -66,10 +89,9 @@ namespace BookLibrary.Services
 
     public interface IBookService
     {
-        Task<IEnumerable<Book>> GetBooks();
-        Task<Book> GetBook(int id);
-        Task CreateBook(Book book);
+        Task<IEnumerable<BookVm>> GetBooks();
+        Task CreateBook(BookVm book);
         Task DeleteBook(int id);
-        Task UpdateBook(Book book);
+        Task UpdateBook(BookVm book);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using BookLibrary.Models;
 using BookLibrary.Services;
+using BookLibrary.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,16 +27,10 @@ namespace BookLibrary.Controllers
             });
         }
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetBook(int id)
-        {
-            return Ok(new {data = await _bookService.GetBook(id)});
-        }
-
         [HttpPost("[action]")]
-        public async Task<IActionResult> CreateBook([FromBody] Book book)
+        public async Task<IActionResult> CreateBook([FromBody] BookVm bookVm)
         {
-            await _bookService.CreateBook(book);
+            await _bookService.CreateBook(bookVm);
             return Ok();
         }
 
@@ -47,9 +42,9 @@ namespace BookLibrary.Controllers
         }
 
         [HttpPut("[action]")]
-        public async Task<IActionResult> UpdateBook([FromBody] Book book)
+        public async Task<IActionResult> UpdateBook([FromBody] BookVm bookVm)
         {
-            await _bookService.UpdateBook(book);
+            await _bookService.UpdateBook(bookVm);
             return Ok();
         }
     }
