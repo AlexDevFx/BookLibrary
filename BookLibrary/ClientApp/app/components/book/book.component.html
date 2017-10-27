@@ -53,7 +53,7 @@
                 <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
                     <button type="button" pButton icon="fa-close" (click)="cancel()" label="Cancel"></button>
                     <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="newBook" label="Save"></button>
-                    <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="!newBook" label="Update"></button>
+                    <button type="button" pButton icon="fa-check" (click)="update()" *ngIf="!newBook" label="Update"></button>
                 </div>
             </footer>
         </p-dialog>

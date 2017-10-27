@@ -7,20 +7,16 @@ import "rxjs/Rx";
 @Injectable()
 export class BookService {
 
-    private baseUrl2: string;
     private _getBooksUrl: string;
-    private _getBookUrl: string;
     private _createBookUrl: string;
     private _deleteBookUrl: string;
     private _updateBookUrl: string;
 
     constructor(private http: Http, @Inject('BASE_URL') baseUrl: string) {
-        this.baseUrl2 = baseUrl;
-        this._getBooksUrl = this.baseUrl2 + 'api/Book/GetBooks';
-        this._getBookUrl = this.baseUrl2 + 'api/Book/GetBook/';
-        this._createBookUrl = this.baseUrl2 + 'api/Book/CreateBook/';
-        this._deleteBookUrl = this.baseUrl2 + 'api/Book/DeleteBook';
-        this._updateBookUrl = this.baseUrl2 + 'api/Book/UpdateBook/';
+        this._getBooksUrl = baseUrl + 'api/Book/GetBooks';
+        this._createBookUrl = baseUrl + 'api/Book/CreateBook/';
+        this._deleteBookUrl = baseUrl + 'api/Book/DeleteBook';
+        this._updateBookUrl = baseUrl + 'api/Book/UpdateBook/';
     }
 
     getBooks() {
@@ -39,6 +35,15 @@ export class BookService {
             .catch(this.handleError);
     }
 
+    updateBook(book: Book): Observable<string> {
+        let body = JSON.stringify(book);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.put(this._updateBookUrl, body, options)
+            .map(res => "OK")
+            .catch(this.handleError);
+    }
+
     deleteBook(id: number): Observable<string> {
         var deleteByIdUrl = this._deleteBookUrl + '?id=' +id;
         return this.http.delete(deleteByIdUrl)
@@ -46,20 +51,7 @@ export class BookService {
             .catch(this.handleError);
     }
 
-
-
     private handleError(error: Response) {
         return Observable.throw(error.json().error || 'Opps!! Server error');
     }
-
-    //TODO: Add DeleteBook
-    //TODO: Add UpdateBook
 }
-//export interface Book {
-//    id?: number;
-//    isbn?: string;
-//    title?: string;
-//    author?: string;
-//    yearPress?: number;
-//    isDeleted?: boolean;
-//}

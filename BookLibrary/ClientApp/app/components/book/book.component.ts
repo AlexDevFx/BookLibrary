@@ -1,4 +1,4 @@
-﻿import { Component, Inject, OnInit  } from '@angular/core';
+﻿import { Component, Inject, OnInit } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Book } from '../../_models/index';
 import { BookService } from '../../_services/book.service'
@@ -8,14 +8,19 @@ import "rxjs/Rx";
 import { InputTextModule, DataTableModule, ButtonModule, DialogModule } from 'primeng/primeng';
 
 class BookInfo implements Book {
-    constructor(public id?: number, public isbn?: string, public title?: string, public author?: string, public yearPress?: number, public isDeleted?: boolean) {}
+    constructor(public id?: number,
+        public isbn?: string,
+        public title?: string,
+        public author?: string,
+        public yearPress?: number,
+        public isDeleted?: boolean) {
+    }
 }
 
 @Component({
     selector: 'book',
     templateUrl: './book.component.html'
 })
-
 export class BookComponent implements OnInit {
     private rowData: any[];
     public books: Book[];
@@ -25,7 +30,7 @@ export class BookComponent implements OnInit {
     book: Book = new BookInfo();
     public editBookId: any;
 
-    constructor(private bookService: BookService) { }
+    constructor(private bookService: BookService) {}
 
     ngOnInit() {
         this.editBookId = 0;
@@ -35,7 +40,7 @@ export class BookComponent implements OnInit {
     loadData() {
         this.bookService.getBooks()
             .subscribe(data => {
-                this.rowData = data.result;
+                    this.rowData = data.result;
                 },
                 error => console.error(error));
     }
@@ -44,6 +49,18 @@ export class BookComponent implements OnInit {
         this.newBook = true;
         this.editBookId = 0;
         this.book = new BookInfo();
+        this.displayDialog = true;
+    }
+
+    showDialogToEdit(book: Book) {
+        this.newBook = false;
+        this.book = new BookInfo();
+        this.book.id = book.id;
+        this.book.author = book.author;
+        this.book.isbn = book.isbn;
+        this.book.isDeleted = book.isDeleted;
+        this.book.title = book.title;
+        this.book.yearPress = book.yearPress;
         this.displayDialog = true;
     }
 
@@ -61,12 +78,19 @@ export class BookComponent implements OnInit {
         this.displayDialog = false;
     }
 
+    update() {
+        alert("test");
+        this.bookService.updateBook(this.book)
+            .subscribe(response => {
+                this.loadData();
+            });
+        this.displayDialog = false;
+    }
+
     cancel() {
         this.book = new BookInfo();
         this.displayDialog = false;
     }
-
-
 
     okDelete(isDeleteConfirm: boolean) {
         if (isDeleteConfirm) {
@@ -79,12 +103,3 @@ export class BookComponent implements OnInit {
         this.displayDeleteDialog = false;
     }
 }
-
-//export interface Book {
-//    id?: number;
-//    isbn?: string;
-//    title?: string;
-//    author?: string;
-//    yearPress?: number;
-//    isDeleted?: boolean;
-//}
