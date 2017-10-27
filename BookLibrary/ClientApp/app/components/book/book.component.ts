@@ -8,12 +8,11 @@ import "rxjs/Rx";
 import { InputTextModule, DataTableModule, ButtonModule, DialogModule } from 'primeng/primeng';
 
 class BookInfo implements Book {
-    constructor(public id?: number,
-        public isbn?: string,
+    constructor(bookId?: number,
+        bookTitle?: string,
         public title?: string,
-        public author?: string,
-        public yearPress?: number,
-        public isDeleted?: boolean) {
+        public categoryId?: number,
+        public categoryName?: string) {
     }
 }
 
@@ -29,11 +28,13 @@ export class BookComponent implements OnInit {
     newBook: boolean;
     book: Book = new BookInfo();
     public editBookId: any;
+    public editBookTitle: any;
 
     constructor(private bookService: BookService) {}
 
     ngOnInit() {
         this.editBookId = 0;
+        this.editBookTitle = '';
         this.loadData();
     }
 
@@ -49,6 +50,7 @@ export class BookComponent implements OnInit {
     showDialogToAdd() {
         this.newBook = true;
         this.editBookId = 0;
+        this.editBookTitle = '';
         this.book = new BookInfo();
         this.displayDialog = true;
     }
@@ -56,18 +58,16 @@ export class BookComponent implements OnInit {
     showDialogToEdit(book: Book) {
         this.newBook = false;
         this.book = new BookInfo();
-        this.book.id = book.id;
-        this.book.author = book.author;
-        this.book.isbn = book.isbn;
-        this.book.isDeleted = book.isDeleted;
-        this.book.title = book.title;
-        this.book.yearPress = book.yearPress;
+        this.book.bookId = book.bookId;
+        this.book.bookTitle = book.bookTitle;
+        this.book.categoryId = book.categoryId;
+        this.book.categoryName = book.categoryName;
         this.displayDialog = true;
     }
 
     showDialogToDelete(book: Book) {
-        console.log(book);
-        this.editBookId = book.id;
+        this.editBookId = book.bookId;
+        this.editBookTitle = book.bookTitle;
         this.displayDeleteDialog = true;
     }
 
@@ -80,7 +80,6 @@ export class BookComponent implements OnInit {
     }
 
     update() {
-        alert("test");
         this.bookService.updateBook(this.book)
             .subscribe(response => {
                 this.loadData();
@@ -98,6 +97,7 @@ export class BookComponent implements OnInit {
             this.bookService.deleteBook(this.editBookId)
                 .subscribe(response => {
                     this.editBookId = 0;
+                    this.editBookTitle = '';
                     this.loadData();
                 });
         }
