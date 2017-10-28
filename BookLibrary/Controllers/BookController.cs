@@ -27,6 +27,16 @@ namespace BookLibrary.Controllers
             });
         }
 
+        [HttpGet("[action]"), Produces("application/json")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetCategories()
+        {
+            return Ok(new
+            {
+                result = await _bookService.GetCategories()
+            });
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateBook([FromBody] BookVm bookVm)
         {

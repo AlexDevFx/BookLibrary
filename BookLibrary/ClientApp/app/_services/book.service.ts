@@ -8,12 +8,14 @@ import "rxjs/Rx";
 export class BookService {
 
     private _getBooksUrl: string;
+    private _getCategoriesUrl: string;
     private _createBookUrl: string;
     private _deleteBookUrl: string;
     private _updateBookUrl: string;
 
     constructor(private http: Http, @Inject('BASE_URL') baseUrl: string) {
         this._getBooksUrl = baseUrl + 'api/Book/GetBooks';
+        this._getCategoriesUrl = baseUrl + 'api/Book/GetCategories'
         this._createBookUrl = baseUrl + 'api/Book/CreateBook/';
         this._deleteBookUrl = baseUrl + 'api/Book/DeleteBook';
         this._updateBookUrl = baseUrl + 'api/Book/UpdateBook/';
@@ -21,8 +23,15 @@ export class BookService {
 
     getBooks() {
         var headers = new Headers();
-        var getContactsUrl = this._getBooksUrl;
-        return this.http.get(getContactsUrl, { headers: headers })
+        var getUrl = this._getBooksUrl;
+        return this.http.get(getUrl, { headers: headers })
+            .map(response => <any>(<Response>response).json());
+    }
+
+    getCategories() {
+        var headers = new Headers();
+        var getUrl = this._getCategoriesUrl;
+        return this.http.get(getUrl, { headers: headers })
             .map(response => <any>(<Response>response).json());
     }
 

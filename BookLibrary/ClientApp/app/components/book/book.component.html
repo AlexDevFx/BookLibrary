@@ -31,8 +31,13 @@
                     <div class="ui-grid-col-8"> <input pInputText id="title" [(ngModel)]="book.bookTitle"/> </div>
                 </div>
                 <div class="ui-grid-row">
-                    <div class="ui-grid-col-4"> <label for="category">Category</label> </div>
-                    <div class="ui-grid-col-8"> <input pInputText id="category" [(ngModel)]="book.categoryName" /> </div>
+                    <div class="ui-grid-col-4"> <label for="category_list">Category</label> </div>
+                    <select [(ngModel)]="book.categoryName">
+                        <option *ngFor="let x of categories"
+                                value={{x.categoryId}}>
+                            {{x.categoryName}}
+                        </option>
+                    </select>
                 </div>
             </div>
             <footer>

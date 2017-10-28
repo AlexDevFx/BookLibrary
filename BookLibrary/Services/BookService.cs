@@ -29,6 +29,11 @@ namespace BookLibrary.Services
             }).ToList();
         }
 
+        public async Task<IEnumerable<Category>> GetCategories()
+        {
+            return await _context.Categories.ToArrayAsync<Category>();
+        }
+
         public async Task CreateBook(BookVm book)
         {
             var category = _context.Categories.FirstOrDefault(x => x.Name.ToUpperInvariant() == book.CategoryName.ToUpperInvariant());
@@ -90,6 +95,7 @@ namespace BookLibrary.Services
     public interface IBookService
     {
         Task<IEnumerable<BookVm>> GetBooks();
+        Task<IEnumerable<Category>> GetCategories();
         Task CreateBook(BookVm book);
         Task DeleteBook(int id);
         Task UpdateBook(BookVm book);

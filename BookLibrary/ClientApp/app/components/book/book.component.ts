@@ -1,6 +1,6 @@
 ﻿import { Component, Inject, OnInit } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Book } from '../../_models/index';
+import { Book, Category } from '../../_models/index';
 import { BookService } from '../../_services/book.service'
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -16,6 +16,12 @@ class BookInfo implements Book {
     }
 }
 
+class CategoryInfo implements Category {
+    constructor(categoryId?: number,
+        public categoryName?: string) {
+    }
+}
+
 @Component({
     selector: 'book',
     templateUrl: './book.component.html'
@@ -23,6 +29,7 @@ class BookInfo implements Book {
 export class BookComponent implements OnInit {
     private rowData: any[];
     public books: Book[];
+    public categories: Category[];
     displayDialog: boolean;
     displayDeleteDialog: boolean;
     newBook: boolean;
@@ -43,6 +50,12 @@ export class BookComponent implements OnInit {
             .subscribe(data => {
                     console.log(data);
                     this.rowData = data.result;
+                },
+                error => console.error(error));
+        this.bookService.getCategories()
+            .subscribe(data => {
+                    console.log(data);
+                    this.categories = data.json;
                 },
                 error => console.error(error));
     }
